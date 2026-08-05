@@ -1,0 +1,32 @@
+# Python
+backend/.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment
+.env
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Python cache
+.pytest_cache/
+.mypy_cache/
+
+# Node
+frontend/node_modules/
+
+# Build
+dist/
+build/
+
+# Coverage
+.coverage
+htmlcov/

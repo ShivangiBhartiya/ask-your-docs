@@ -1,0 +1,15 @@
+# ---------- Web Framework ----------
+fastapi
+uvicorn[standard]
+
+# ---------- Database ----------
+sqlalchemy
+psycopg2-binary
+alembic
+
+# ---------- Configuration ----------
+pydantic-settings
+python-dotenv
+
+# ---------- Development ----------
+httpx
