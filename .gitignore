@@ -30,3 +30,6 @@ build/
 # Coverage
 .coverage
 htmlcov/
+
+# Uploaded documents
+uploads/

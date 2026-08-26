@@ -13,3 +13,11 @@ python-dotenv
 
 # ---------- Development ----------
 httpx
+
+pwdlib[argon2] 
+python-jose[cryptography]
+python-multipart
+pypdf
+pytesseract pillow pymupdf
+pgvector
+sentence-transformers
