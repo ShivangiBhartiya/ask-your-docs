@@ -21,3 +21,4 @@ pypdf
 pytesseract pillow pymupdf
 pgvector
 sentence-transformers
+requests

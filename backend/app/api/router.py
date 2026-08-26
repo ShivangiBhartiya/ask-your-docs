@@ -1,4 +1,4 @@
-
+from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, File, UploadFile, HTTPException
 from app.core.config import settings
 from app.database.session import get_db
@@ -6,13 +6,15 @@ from app.database.session import get_db
 from app.schemas.user import UserResponse, UserCreate
 from app.models import User, Document
 from app.schemas.document import DocumentResponse
-
 from app.utils.security import hash_password, verify_password, create_access_token
 from app.dependencies.auth import get_current_user
 from app.services.document_parser import extract_text
-from fastapi.security import OAuth2PasswordRequestForm
 from app.services.document_ingestion import ingest_document
-
+from app.schemas.search import SearchRequest, SearchResult
+from app.services.embedding_service import generate_embedding
+from app.repositories.document_chunk_repository import search_similar_chunks
+from app.schemas.search import AskRequest, AskResponse
+from app.services.rag_service import answer_question
 from app.repositories.document_repository import (
     get_document_by_id,
     get_documents_by_user,
@@ -186,3 +188,41 @@ def delete_document(
     delete_document_from_db(db, document)
 
     return {"message": "Document deleted successfully"}
+
+
+@router.post("/documents/search", response_model=list[SearchResult])
+def search_documents(
+    request: SearchRequest,
+    current_user: User = Depends(get_current_user),
+    db=Depends(get_db),
+):
+    query_embedding = generate_embedding(request.query)
+
+    chunks = search_similar_chunks(
+        db=db,
+        query_embedding=query_embedding,
+        user_id=current_user.id,
+        top_k=request.top_k,
+    )
+
+    return [
+        SearchResult(
+            content=chunk.content,
+            document_id=str(chunk.document_id),
+        )
+        for chunk in chunks
+    ]
+
+
+@router.post("/documents/ask", response_model=AskResponse)
+def ask_documents(
+    request: AskRequest,
+    current_user: User = Depends(get_current_user),
+    db=Depends(get_db),
+):
+    return answer_question(
+        db=db,
+        question=request.question,
+        user_id=current_user.id,
+        top_k=request.top_k,
+    )
