@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@import "@fontsource/fraunces/400.css";
+@import "@fontsource/fraunces/500.css";
+@import "@fontsource/fraunces/600-italic.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
+@theme {
+  /* Surfaces — warm near-black, never pure #000 */
+  --color-bg: #0d0c0a;
+  --color-surface: #151310;
+  --color-surface-raised: #1c1916;
+  --color-surface-hover: #221e1a;
+
+  /* Lines */
+  --color-line: #2a251f;
+  --color-line-soft: #1e1a16;
+
+  /* Text — warm bone, not clinical gray */
+  --color-ink: #f2ece1;
+  --color-ink-muted: #a89e8f;
+  --color-ink-faint: #837a6a;
+
+  /* Accent — muted brass, used sparingly */
+  --color-brass: #c9a25f;
+  --color-brass-dim: #8a713f;
+  --color-brass-soft: #c9a25f1f;
+
+  --font-display: "Fraunces", "Iowan Old Style", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-brass-soft);
+  color: var(--color-ink);
+}
+
+/* thin, quiet scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+:focus-visible {
+  outline: 1.5px solid var(--color-brass);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Conversation experience: thinking indicator + answer reveal */
+@keyframes thinking-pulse {
+  0%, 80%, 100% { opacity: 0.3; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-2px); }
+}
+.thinking-dot {
+  animation: thinking-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes answer-reveal {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.answer-enter {
+  animation: answer-reveal 280ms ease-out;
+}
